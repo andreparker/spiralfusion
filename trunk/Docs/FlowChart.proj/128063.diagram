@@ -1,0 +1,86 @@
+format 55
+
+pseudostatecanvas 128063 pseudostate_ref 128063 // entry_point
+  xyz 59 217 3005 label_xy 59 238
+statecanvas 128447 state_ref 128319 // culling
+  show_activities default region_horizontally default drawing_language default
+  xyzwh 114 211 2000 57 33
+statecanvas 128831 state_ref 128447 // clipping
+  show_activities default region_horizontally default drawing_language default
+  xyzwh 246 144 2000 63 33
+pseudostatecanvas 129087 pseudostate_ref 128447 // exit_point
+  xyz 394 217 3005 label_xy 371 236
+pseudostatecanvas 129471 pseudostate_ref 128831 // fork
+  xyz 209 214 2000
+pseudostatecanvas 129983 pseudostate_ref 128959 // fork
+  xyz 338 148 2000
+statecanvas 130367 state_ref 128575 // Perspective Transform
+  show_activities default region_horizontally default drawing_language default
+  xyzwh 297 65 2000 149 33
+pseudostatecanvas 130623 pseudostate_ref 129087 // fork
+  xyz 449 141 2000
+statecanvas 130879 state_ref 128703 // Perspective divide
+  show_activities default region_horizontally default drawing_language default
+  xyzwh 541 250 2000 123 33
+statecanvas 131263 state_ref 128831 // Screen Project
+  show_activities default region_horizontally default drawing_language default
+  xyzwh 552 344 2000 101 33
+statecanvas 131519 state_ref 128959 // Light/fog/etc.. calculations
+  show_activities default region_horizontally default drawing_language default
+  xyzwh 521 90 2000 163 33
+statecanvas 132671 state_ref 129087 // Raster
+  show_activities default region_horizontally default drawing_language default
+  xyzwh 574 434 2000 57 33
+transitioncanvas 128575 transition_ref 128191 // <transition>
+  
+  from ref 128063 z 1999 to ref 128447
+  write_horizontally default show_definition default drawing_language default
+transitioncanvas 129599 transition_ref 128319 // <transition>
+  
+  from ref 128447 z 1999 to ref 129471
+  write_horizontally default show_definition default drawing_language default
+transitioncanvas 129727 transition_ref 128447 // culled_Yes
+  
+  from ref 129471 z 1999 label "culled_Yes" xyz 280 219 1999 to ref 129087
+  write_horizontally default show_definition default drawing_language default
+transitioncanvas 129855 transition_ref 128575 // culled_No
+  
+  from ref 129471 z 1999 label "culled_No" xyz 218 189 1999 to ref 128831
+  write_horizontally default show_definition default drawing_language default
+transitioncanvas 130111 transition_ref 128703 // <transition>
+  
+  from ref 128831 z 1999 to ref 129983
+  write_horizontally default show_definition default drawing_language default
+transitioncanvas 130239 transition_ref 128831 // clipped_out
+  
+  from ref 129983 z 1999 label "clipped_out" xyz 346 185 1999 to ref 129087
+  write_horizontally default show_definition default drawing_language default
+transitioncanvas 130495 transition_ref 128959 // clipped
+  
+  from ref 129983 z 1999 label "clipped" xyz 338 114 1999 to ref 130367
+  write_horizontally default show_definition default drawing_language default
+transitioncanvas 130751 transition_ref 129087 // <transition>
+  
+  from ref 130367 z 1999 to ref 130623
+  write_horizontally default show_definition default drawing_language default
+transitioncanvas 131391 transition_ref 129343 // <transition>
+  
+  from ref 130879 z 1999 to ref 131263
+  write_horizontally default show_definition default drawing_language default
+transitioncanvas 131647 transition_ref 129471 // Special_operations
+  
+  from ref 130623 z 1999 label "Special_operations" xyz 457 129 1999 to ref 131519
+  write_horizontally default show_definition default drawing_language default
+transitioncanvas 132287 transition_ref 129983 // no_special_operations
+  
+  from ref 130623 z 1999 label "no_special_operations" xyz 466 195 1999 to ref 130879
+  write_horizontally default show_definition default drawing_language default
+transitioncanvas 132415 transition_ref 130111 // <transition>
+  
+  from ref 131519 z 1999 to ref 130879
+  write_horizontally default show_definition default drawing_language default
+transitioncanvas 132799 transition_ref 130239 // <transition>
+  
+  from ref 131263 z 1999 to ref 132671
+  write_horizontally default show_definition default drawing_language default
+end

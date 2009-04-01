@@ -1,0 +1,200 @@
+format 55
+"FlowChart.proj"
+  revision 2
+  modified_by 17 "Administrator"
+
+
+  
+  // class settings
+  default_attribute_visibility protected default_relation_visibility protected default_operation_visibility public
+  //class diagram settings
+  draw_all_relations yes hide_attributes no hide_operations no show_members_full_definition no show_members_visibility no show_members_stereotype no show_members_multiplicity no show_members_initialization no member_max_width 127 show_parameter_dir yes show_parameter_name yes package_name_in_tab no class_drawing_mode natural drawing_language uml show_context_mode no auto_label_position yes show_infonote no shadow yes
+  //use case diagram settings
+  package_name_in_tab no show_context no auto_label_position yes draw_all_relations yes class_drawing_mode actor shadow yes
+  //sequence diagram settings
+  show_full_operations_definition no write_horizontally yes class_drawing_mode natural drawing_language uml draw_all_relations yes shadow yes
+  //collaboration diagram settings
+  show_full_operations_definition no show_hierarchical_rank no write_horizontally yes drawing_language uml package_name_in_tab no show_context no draw_all_relations yes shadow yes
+  //object diagram settings
+   write_horizontally yes package_name_in_tab no show_context no auto_label_position yes draw_all_relations yes shadow yes
+  //component diagram settings
+  package_name_in_tab no show_context no auto_label_position yes draw_all_relations yes shadow yes
+  draw_component_as_icon no show_component_req_prov no show_component_rea no
+  //deployment diagram settings
+  package_name_in_tab no show_context no write_horizontally yes auto_label_position yes draw_all_relations yes shadow yes
+  draw_component_as_icon no show_component_req_prov no show_component_rea no
+  //state diagram settings
+  package_name_in_tab no show_context no auto_label_position yes write_trans_label_horizontally yes show_trans_definition no draw_all_relations yes shadow yes
+  show_activities yes region_horizontally yes drawing_language uml
+  //activity diagram settings
+  package_name_in_tab no show_context no show_opaque_action_definition no auto_label_position yes write_flow_label_horizontally no draw_all_relations yes shadow yes
+  show_infonote yes drawing_language uml
+  
+  class_color yellow duration_color transparent continuation_color gray note_color blue fragment_color transparent subject_color transparent usecase_color yellow package_color transparent component_color green artifact_color green deploymentnode_color gray state_color yellow stateaction_color transparent activity_color transparent activityregion_color transparent activityaction_color transparent parameterpin_color white 
+  font_size 8
+  diagram_format A4
+
+  mark_for_import
+  
+  usecaseview 128063 "3D pipe line"
+    //use case diagram settings
+    package_name_in_tab default show_context default auto_label_position default draw_all_relations default class_drawing_mode default shadow default
+    //sequence diagram settings
+    show_full_operations_definition default write_horizontally default class_drawing_mode default drawing_language default draw_all_relations default shadow default
+    //collaboration diagram settings
+    show_full_operations_definition default show_hierarchical_rank default write_horizontally default drawing_language default package_name_in_tab default show_context default draw_all_relations default shadow default
+    //object diagram settings
+     write_horizontally default package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default
+    //state diagram settings
+    package_name_in_tab default show_context default auto_label_position default write_trans_label_horizontally default show_trans_definition default draw_all_relations default shadow default
+    show_activities default region_horizontally default drawing_language default
+    //activity diagram settings
+    package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
+    show_infonote default drawing_language default
+    state 128063 "pipeline"
+      stereotype "machine"
+      statediagram 128063 "pipeline"
+	package_name_in_tab default show_context default auto_label_position default write_trans_label_horizontally default show_trans_definition default draw_all_relations no shadow default
+	show_activities default region_horizontally default drawing_language default
+	size A4
+      end
+
+      pseudostate 128063 entry_point "input"
+	transition 128063 "<transition>"
+	  on state_ref 128191 // Primitive clipping/culling
+	  external 
+	end
+
+	transition 128191 "<transition>"
+	  on state_ref 128319 // culling
+	  external 
+	end
+      end
+
+      state 128191 "Primitive clipping/culling"
+      end
+
+      state 128319 "culling"
+	pseudostate 128191 fork 
+	  comment "
+"
+	end
+
+	transition 128319 "<transition>"
+	  on pseudostate_ref 128831 // fork
+	  comment "
+"
+	  external 
+	end
+      end
+
+      state 128447 "clipping"
+	transition 128703 "<transition>"
+	  on pseudostate_ref 128959 // fork
+	  external 
+	end
+      end
+
+      pseudostate 128319 terminate 
+      end
+
+      pseudostate 128447 exit_point "thrown away"
+      end
+
+      pseudostate 128575 fork 
+      end
+
+      pseudostate 128703 fork 
+      end
+
+      pseudostate 128831 fork 
+	transition 128447 "culled_Yes"
+	  on pseudostate_ref 128447 // exit_point
+	  external 
+	end
+
+	transition 128575 "culled_No"
+	  on state_ref 128447 // clipping
+	  external 
+	end
+      end
+
+      pseudostate 128959 fork 
+	transition 128831 "clipped_out"
+	  on pseudostate_ref 128447 // exit_point
+	  external 
+	end
+
+	transition 128959 "clipped"
+	  on state_ref 128575 // Perspective Transform
+	  external 
+	end
+      end
+
+      state 128575 "Perspective Transform"
+	transition 129087 "<transition>"
+	  on pseudostate_ref 129087 // fork
+	  external 
+	end
+      end
+
+      pseudostate 129087 fork 
+	transition 129215 "<transition>"
+	  on state_ref 128703 // Perspective divide
+	  external 
+	end
+
+	transition 129471 "Special_operations"
+	  on state_ref 128959 // Light/fog/etc.. calculations
+	  external 
+	end
+
+	transition 129599 "<transition>"
+	  on pseudostate_ref 129215 // join
+	  external 
+	end
+
+	transition 129983 "no_special_operations"
+	  on state_ref 128703 // Perspective divide
+	  external 
+	end
+      end
+
+      state 128703 "Perspective divide"
+	transition 129343 "<transition>"
+	  on state_ref 128831 // Screen Project
+	  external 
+	end
+      end
+
+      state 128831 "Screen Project"
+	transition 130239 "<transition>"
+	  on state_ref 129087 // Raster
+	  external 
+	end
+      end
+
+      state 128959 "Light/fog/etc.. calculations"
+	transition 129727 "<transition>"
+	  on pseudostate_ref 129215 // join
+	  external 
+	end
+
+	transition 130111 "<transition>"
+	  on state_ref 128703 // Perspective divide
+	  external 
+	end
+      end
+
+      pseudostate 129215 join 
+	transition 129855 "<transition>"
+	  on state_ref 128703 // Perspective divide
+	  external 
+	end
+      end
+
+      state 129087 "Raster"
+      end
+    end
+  end
+end
