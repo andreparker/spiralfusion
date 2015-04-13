@@ -41,9 +41,24 @@ namespace Soft3D
 	template< class _Real >
 	inline _Real TriangleGradient(const MathUtil::Vector2< _Real >& v0, const MathUtil::Vector2< _Real >& v1, const MathUtil::Vector2< _Real >& v2 )
 	{
-		//MathUtil::Vector2< _Real > n0( v2.x - v1.x, v0.y - v1.y );
-		//MathUtil::Vector2< _Real > n1( v0.x - v1.x, v2.y - v1.y );
+		MathUtil::Vector2< _Real > n0( v2.x - v1.x, v0.y - v1.y );
+		MathUtil::Vector2< _Real > n1( v0.x - v1.x, v2.y - v1.y );
 
+		return n0.y * n0.x - n1.y * n1.x;
+	}
+
+    template< class _Real >
+	inline _Real TriangleGradient(const MathUtil::Vector3< _Real >& v0, const MathUtil::Vector3< _Real >& v1, const MathUtil::Vector3< _Real >& v2 )
+	{
+		MathUtil::Vector3< _Real > n0 = v2 - v1;//( v2.x - v1.x, v0.y - v1.y, v );
+		MathUtil::Vector3< _Real > n1 = v0 - v1;//( v0.x - v1.x, v2.y - v1.y );
+
+		return n0.y * n0.x * n0.z - n1.y * n1.x * n1.z;
+	}
+
+	template< class _Real >
+	inline _Real Handeness2d(const MathUtil::Vector2< _Real >& v0, const MathUtil::Vector2< _Real >& v1, const MathUtil::Vector2< _Real >& v2 )
+	{
         MathUtil::Vector2< _Real > n0( v0.x - v1.x, v0.y - v1.y );
 		MathUtil::Vector2< _Real > n1( v2.x - v1.x, v2.y - v1.y );
 

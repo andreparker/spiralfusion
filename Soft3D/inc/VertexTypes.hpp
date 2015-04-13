@@ -26,6 +26,11 @@ namespace Soft3D
 	// gourad shaded Triangle
 	struct GouradVertexType
 	{
+        GouradVertexType(){}
+        GouradVertexType( Real _x, Real _y, Real _z, Real _w,
+         Real _r, Real _g, Real _b, Real _a):
+         x(_x), y(_y), z(_z), w(_w), r(_r), g(_g), b(_b), a(_a){}
+
 		Real x,y,z,w;
 		Real r,g,b,a;
 	};

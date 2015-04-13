@@ -35,7 +35,7 @@ namespace Soft3D
 		// determine which edge of the triangle is on the left and right
 		//----------------------------------------------------------------------
 		MathUtil::Vector2< _Real > c0( v0.x, v0.y ),c1( v1.x, v1.y ),c2( v2.x, v2.y );
-		_Real handednes = TriangleGradient( c0, c1, c2 );	// triangle winding
+		_Real handednes = Handeness2d( c0, c1, c2 );	// triangle winding
 
 		PolygonEdge< _Real, VertexType > leftEdge, rightEdge;
 		PolygonGradient< _Real, VertexType > gradient;		// whole triangle gradients
@@ -67,7 +67,7 @@ namespace Soft3D
 		// make sure there is another piece to draw
 		if( ( leftEdge.GetHeight() + rightEdge.GetHeight() ) )
 		{
-			if( handednes <= 0 )
+			if( FixedPoint::Ceil(handednes) <= 0 )
 				leftEdge.SetupInterpolants( v2, v1 );
 			else
 				rightEdge.SetupInterpolants( v2, v1 );

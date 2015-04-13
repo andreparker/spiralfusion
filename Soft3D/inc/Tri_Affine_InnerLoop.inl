@@ -38,8 +38,8 @@ namespace Soft3D
 		EdgeData leftData,rightData;
 		boost::uint32_t leftX,scanSize;
 		FrameBufferType* currentScanLinePtr;
-		FrameBufferType  currentPixel = fragmentProg.Sample().color;
 
+        fragmentProg.SetVector(FragmentProgram::FATTR_RES_1, FragmentProgram::vec4(gradients.w,0,0,1.0f));
 		while( height-- != 0 )
 		{
 			leftData = left.GetEdgeData();
@@ -50,7 +50,8 @@ namespace Soft3D
 
 			currentScanLinePtr = &info.SurfaceDataPtr[ leftX ];
 
-			Soft3D::duff_copy4( currentPixel, currentScanLinePtr, scanSize+1 );
+			//Soft3D::duff_copy4( currentPixel, currentScanLinePtr, scanSize+1 );
+			InterpolateScanLine< FrameBufferType, _Real,  PolygonEdge< _Real, VertexType > >(left,right,fragmentProg,currentScanLinePtr);
 
 			currentScanLinePtr += scanSize;
 

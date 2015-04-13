@@ -10,6 +10,8 @@ namespace Soft3D
 	{
 		public:
 			DefaultFragmentProgram(){}
+
+			virtual void Execute();
 	};
 }
 

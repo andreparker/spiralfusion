@@ -114,6 +114,12 @@ namespace MathUtil
 			return Vector3( _val-vec.x, _val-vec.y, _val-vec.z );
 		}
 
+
+		friend Vector3 operator-( const Vector3& vec0, const Vector3& vec1 )
+		{
+			return Vector3( vec0.x-vec1.x, vec0.y-vec1.y, vec0.z-vec1.z );
+		}
+
 		template< typename _custom >
 		friend Vector3 operator*( _custom _val, const Vector3& vec )
 		{

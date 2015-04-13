@@ -13,7 +13,7 @@ namespace Soft3D
 	{
 		RGBAColor():color(0){}
 
-		RGBAColor( 
+		RGBAColor(
 					boost::uint8_t _r,
 					boost::uint8_t _g,
 					boost::uint8_t _b,
@@ -43,6 +43,11 @@ namespace Soft3D
 			return static_cast< boost::uint8_t >( (clr >> 24) );
 		}
 
+        boost::uint32_t Color()const
+        {
+            return b | (g << 8) | (r << 16) | (a << 24);
+        }
+
 		union{
 			boost::uint32_t color;
 			struct{
@@ -67,6 +72,7 @@ namespace Soft3D
 			Mat4	m_Matrices[ max_register_count ];  // used for custom programs
 			Texture* m_Textures[ max_texture_count ]; // used for color sampling
 
+        public:
 			vec4	GetVector( boost::uint32_t index )const{ return m_Vectors[ index ]; }
 			Mat4	GetMatrix( boost::uint32_t index )const{ return m_Matrices[ index ]; }
 
@@ -82,13 +88,16 @@ namespace Soft3D
 				FATTR_UV3,
 				FATTR_UV4,
 				FATTR_COLOR,
+				FATTR_COLOR2,
+				FATTR_MISC,
+				FATTR_RES_1,
 			};
 
 			// used to return a sample
 			virtual RGBAColor Sample()
 			{
 				vec4 color = GetVector( FATTR_COLOR );
-				return RGBAColor( 
+				return RGBAColor(
 					static_cast< boost::uint8_t >( color.x ),
 					static_cast< boost::uint8_t >( color.y ),
 					static_cast< boost::uint8_t >( color.z ),
@@ -96,6 +105,7 @@ namespace Soft3D
 
 			}
 
+			virtual void Execute(){}
 
 			void SetVector( boost::uint32_t index, const vec4& vec ){ m_Vectors[ index ] = vec; }
 			void SetMatrice( boost::uint32_t index, const Mat4& mat ){ m_Matrices[ index ] = mat; }

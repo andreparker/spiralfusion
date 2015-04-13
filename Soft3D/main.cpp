@@ -33,15 +33,18 @@ class eventHandler : public SDLmm::EventHandler
 static void TestAffineDraw( SurfaceInfo< boost::uint32_t, boost::uint32_t >& info  )
 {
 	PROFILE_FUNCTION();
-	TriangleVertices< DefaultVertexType >  vertices;
-	DefaultVertexType v0( static_cast< Real >( screen_width/4 ), 0, 0, 1 ),
-						v1( static_cast< Real >( screen_width ), static_cast< Real >( screen_height/2 ), 0, 1 ),
-						v2( 0, static_cast< Real >( screen_height ), 0, 1 );
+	TriangleVertices< GouradVertexType >  vertices;
+	GouradVertexType v0( static_cast< Real >( screen_width/4 ), 0, 0, 1,
+                        255.0f, 0.0f, 0.0f, 255.0f),
+						v1( static_cast< Real >( screen_width ), static_cast< Real >( screen_height/2 ), 0, 1,
+                            0.0f, 255.0f, 0.0f, 255.0f),
+						v2( 0, static_cast< Real >( screen_height ), 0, 1,
+						    0.0f, 0.0f, 255.0f, 255.0f);
 
 	// sort vertices into a vertex list
 	VertexSort( v0, v1, v2, vertices );
 
-	DrawTriangleAffine< DefaultVertexType, boost::uint32_t, boost::uint32_t, Real >( info, vertices, fragProg );
+	DrawTriangleAffine< GouradVertexType, boost::uint32_t, boost::uint32_t, Real >( info, vertices, fragProg );
 }
 
 int main( int argc, char** argv )

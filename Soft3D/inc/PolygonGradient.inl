@@ -53,6 +53,51 @@ namespace Soft3D
 			}
 	};
 
+    //==================================================================================================
+    template< class _Real >
+	class PolygonGradient< _Real, GouradVertexType >
+	{
+		protected:
+			_Real m_wGradient;
+
+		public:
+
+			struct GradientData
+			{
+				_Real w;
+			};
+
+			PolygonGradient(): m_wGradient(0){}
+
+			PolygonGradient( const GouradVertexType& v0, const GouradVertexType& v1, const GouradVertexType& v2 )
+			{
+				SetupGradients( v0, v1, v2 );
+			}
+
+			GradientData GetGradientData()const
+			{
+				GradientData data;
+				data.w = m_wGradient;
+
+				return data;
+			}
+
+			void SetupGradients( const GouradVertexType& v0, const GouradVertexType& v1, const GouradVertexType& v2 )
+			{
+				// calculate texture u,v,n,t,w gradients based of y
+				MathUtil::Vector3< _Real > c0( v0.x, v0.y, 1.0f ), c1( v1.x, v1.y, 1.0f ), c2( v2.x, v2.y, 1.0f );
+				// inverse w for perspective correction
+				MathUtil::Vector3< _Real > w0( v0.r, v0.g, v0.b ), w1( v1.r, v1.g, v1.b ), w2( v2.r, v2.g, v2.b );
+
+				// calculate determinants
+				_Real ydet = TriangleGradient( c0, c1, c2 );
+				_Real wdet = TriangleGradient( w0, w1, w2 );
+
+				// divide by y to get gradient
+				m_wGradient = wdet / ydet;
+			}
+	};
+	//===========================================================================================================
 	template< class _Real >
 	class PolygonGradient< _Real, Tex1VertexType >
 	{

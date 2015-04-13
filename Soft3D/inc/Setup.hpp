@@ -4,10 +4,10 @@
 #include <boost/cstdint.hpp>
 #include <bitset>
 #include "FixedPoint.inl"
-	
+
 namespace Soft3D
 {
-#if 1
+#if 0
 	typedef  FixedPoint::fxReal18_14 Real;
 #else
 	typedef	float Real;

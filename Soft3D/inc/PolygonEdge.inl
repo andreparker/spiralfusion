@@ -3,6 +3,7 @@
 
 #include "Setup.hpp"
 #include "VertexTypes.hpp"
+#include "FragmentProgram.hpp"
 
 namespace Soft3D
 {
@@ -109,9 +110,9 @@ namespace Soft3D
             m_wInterpolant(0), m_rInterpolant(0), m_gInterpolant(0), m_bInterpolant(0), m_aInterpolant(0),
             m_x(0), m_w(0), m_r(0), m_g(0), m_b(0), m_a(0), m_height(0){}
 
-            PolygonEdge(const GouradVertexType& v0, const GouradVertexType& v1)
+            PolygonEdge(const GouradVertexType& v1, const GouradVertexType& v0)
             {
-                SetupInterpolants(v0,v1);
+                SetupInterpolants(v1,v0);
             }
 
             EdgeData GetEdgeData()const
@@ -123,6 +124,7 @@ namespace Soft3D
                 data.r = m_r;
                 data.g = m_g;
                 data.b = m_b;
+                data.a = m_a;
 
                 return data;
             }
@@ -134,39 +136,48 @@ namespace Soft3D
                 m_r += m_rInterpolant;
                 m_g += m_gInterpolant;
                 m_b += m_bInterpolant;
+                m_a += m_aInterpolant;
             }
 
             boost::uint32_t GetHeight()const{ return m_height; }
 			void SubtractHeight( boost::uint32_t value ){ m_height -= value; }
 
-            void SetupInterpolants(const GouradVertexType& v0, const GouradVertexType& v1)
+            void SetupInterpolants(const GouradVertexType& v1, const GouradVertexType& v0)
             {
-                _Real inv_v0_w = 1 / v0.w;
-                _Real delta_w = 1 / v1.w - inv_v0_w;
+
                 _Real delta_y = v1.y - v0.y;
-                _Real delta_x = v1.x - v0.x;
-                _Real delta_r = v1.r - v0.r;
-                _Real delta_g = v1.g - v0.g;
-                _Real delta_b = v1.b - v0.b;
-                _Real delta_a = v1.a - v0.a;
+                if( delta_y > 0 )
+                {
+                    _Real inv_v0_w = 1 / v0.w;
+                    _Real delta_w = 1 / v1.w - inv_v0_w;
 
-                _Real inv_delta_y = 1 / delta_y;
+                    _Real delta_x = v1.x - v0.x;
+                    _Real delta_r = v1.r - v0.r;
+                    _Real delta_g = v1.g - v0.g;
+                    _Real delta_b = v1.b - v0.b;
+                    _Real delta_a = v1.a - v0.a;
 
-                m_xInterpolant = delta_x * inv_delta_y;
-                m_wInterpolant = delta_w * inv_delta_y;
-                m_rInterpolant = delta_r * inv_delta_y;
-                m_gInterpolant = delta_g * inv_delta_y;
-                m_bInterpolant = delta_b * inv_delta_y;
-                m_aInterpolant = delta_a * inv_delta_y;
+                    _Real inv_delta_y = 1 / delta_y;
+
+                    m_xInterpolant = delta_x * inv_delta_y;
+                    m_wInterpolant = delta_w * inv_delta_y;
+                    m_rInterpolant = delta_r * inv_delta_y;
+                    m_gInterpolant = delta_g * inv_delta_y;
+                    m_bInterpolant = delta_b * inv_delta_y;
+                    m_aInterpolant = delta_a * inv_delta_y;
+
+                    m_x = v0.x;
+                    m_w = inv_v0_w;
+                    m_r = v0.r;
+                    m_g = v0.g;
+                    m_b = v0.b;
+                    m_a = v0.a;
+                }
+
 
                 m_height = static_cast< boost::uint32_t >(delta_y);
 
-                m_x = v0.x;
-                m_w = inv_v0_w;
-                m_r = v0.r;
-                m_g = v0.g;
-                m_b = v0.b;
-                m_a = v0.a;
+
             }
     };
 
@@ -262,6 +273,88 @@ namespace Soft3D
 				m_n = v0.n;
 				m_t = v0.t;
 			}
+	};
+
+	template< class FrameBufferType, class _Real, class _PolygonEdgeType >
+	class InterpolateScanLine
+	{
+        public:
+            InterpolateScanLine(const _PolygonEdgeType& edge0, const _PolygonEdgeType& edge1, FragmentProgram& program, FrameBufferType* scanLine)
+            {
+                typename _PolygonEdgeType::EdgeData edge_data0 = edge0.GetEdgeData();
+                typename _PolygonEdgeType::EdgeData edge_data1 = edge1.GetEdgeData();
+
+                boost::int32_t scanLineSize = static_cast< boost::int32_t >(FixedPoint::Ceil(edge_data1.x - edge_data0.x)) + 1;
+                FrameBufferType pixel = program.Sample().Color();
+
+                while( scanLineSize-- > 0)
+                {
+                    program.Execute();
+                    *scanLine = pixel;
+                    ++scanLine;
+                }
+            }
+	};
+
+	template< class FrameBufferType, class _Real >
+	class InterpolateScanLine< FrameBufferType, _Real, PolygonEdge< _Real, GouradVertexType > >
+	{
+        public:
+            InterpolateScanLine(const PolygonEdge< _Real, GouradVertexType >& edge0, const PolygonEdge< _Real, GouradVertexType >& edge1,
+            FragmentProgram& program, FrameBufferType* scanLine)
+            {
+                typename PolygonEdge< _Real, GouradVertexType >::EdgeData edge_data0 = edge0.GetEdgeData();
+                typename PolygonEdge< _Real, GouradVertexType >::EdgeData edge_data1 = edge1.GetEdgeData();
+
+                boost::int32_t scanLineSize = static_cast< boost::int32_t >(FixedPoint::Ceil(edge_data1.x - edge_data0.x)) + 1;
+                _Real inv_scan = 1.0f / scanLineSize;
+
+                _Real r_Interp = inv_scan * (edge_data1.r - edge_data0.r);
+                _Real g_Interp = inv_scan * (edge_data1.g - edge_data0.g);
+                _Real b_Interp = inv_scan * (edge_data1.b - edge_data0.b);
+                _Real a_Interp = inv_scan * (edge_data1.a - edge_data0.a);
+
+                _Real r = edge_data0.r, g = edge_data0.g, b = edge_data0.b, a = edge_data0.a;
+
+                _Real gradient = program.GetVector(FragmentProgram::FATTR_RES_1).x;
+                while( scanLineSize-- > 0)
+                {
+                    program.SetVector(FragmentProgram::FATTR_COLOR, FragmentProgram::vec4(r,g,b,a));
+
+                    program.Execute();
+                    FrameBufferType pixel = program.Sample().Color();
+                    *scanLine = pixel;
+
+                    r += r_Interp;
+                    g += g_Interp;
+                    b += b_Interp;
+                    a += a_Interp;
+
+                    ++scanLine;
+                }
+            }
+	};
+
+	template< class FrameBufferType, class _Real >
+	class InterpolateScanLine< FrameBufferType, _Real, PolygonEdge< _Real, DefaultVertexType > >
+	{
+        public:
+            InterpolateScanLine(const PolygonEdge< _Real, DefaultVertexType >& edge0, const PolygonEdge< _Real, DefaultVertexType >& edge1,
+            FragmentProgram& program, FrameBufferType* scanLine)
+            {
+                typename PolygonEdge< _Real, DefaultVertexType >::EdgeData edge_data0 = edge0.GetEdgeData();
+                typename PolygonEdge< _Real, DefaultVertexType >::EdgeData edge_data1 = edge1.GetEdgeData();
+
+                boost::int32_t scanLineSize = static_cast< boost::int32_t >(FixedPoint::Ceil(edge_data1.x - edge_data0.x)) + 1;
+                FrameBufferType pixel = program.Sample().Color();
+
+                while( scanLineSize-- > 0)
+                {
+                    program.Execute();
+                    *scanLine = pixel;
+                    ++scanLine;
+                }
+            }
 	};
 }
 
