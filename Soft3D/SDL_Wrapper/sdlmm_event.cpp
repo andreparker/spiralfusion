@@ -1,17 +1,17 @@
 /*
  * SDLmm - a C++ wrapper for SDL and related libraries
  * Copyright © 2001 David Hedbor <david@hedbor.org>
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -19,7 +19,7 @@
  */
 
 #include "sdlmm_config.h"
-RCSID("$Id: sdlmm_event.cpp,v 1.8 2001/06/25 23:24:52 rad_ad Exp $");
+//RCSID("$Id: sdlmm_event.cpp,v 1.8 2001/06/25 23:24:52 rad_ad Exp $");
 
 // SDLmm event handling
 #include <SDL.h>
@@ -35,7 +35,7 @@ namespace SDLmm {
       return SDL_PollEvent(0) != 0;
     }
   }
-  
+
   bool Event::Wait(bool fetch) {
     if(fetch) {
       return SDL_WaitEvent(&me) != 0;
@@ -54,7 +54,7 @@ namespace SDLmm {
 
   void Event::SetEventFilter(SDL_EventFilter filter) {
     SDL_SetEventFilter(filter);
-  }    
+  }
 
   SDL_EventFilter Event::GetEventFilter() {
     return SDL_GetEventFilter();
@@ -71,7 +71,7 @@ namespace SDLmm {
   Uint8 *Event::GetKeyState() {
     return SDL_GetKeyState(0);
   }
-  
+
   SDLMod Event::GetModState() {
     return SDL_GetModState();
   }
@@ -79,7 +79,7 @@ namespace SDLmm {
   char *Event::GetKeyName(SDLKey key) {
     return SDL_GetKeyName(key);
   }
-  
+
   void Event::SetModState(SDLMod modstate) {
     SDL_SetModState(modstate);
   }
@@ -91,7 +91,7 @@ namespace SDLmm {
   Uint8 Event::GetMouseState(int *x, int *y) {
     return SDL_GetMouseState(x, y);
   }
-  
+
   Uint8 Event::GetRelativeMouseState(int *x, int *y) {
     return SDL_GetRelativeMouseState(x, y);
   }
@@ -114,10 +114,10 @@ namespace SDLmm {
       case SDL_KEYDOWN:
 	ev_handled = handler.HandleKeyPressEvent(event.key.keysym);
 	break;
-      case SDL_KEYUP: 
+      case SDL_KEYUP:
 	ev_handled = handler.HandleKeyReleaseEvent(event.key.keysym);
 	break;
-      case SDL_MOUSEMOTION: 
+      case SDL_MOUSEMOTION:
 	ev_handled = handler.HandleMouseMotionEvent(event.motion.state,
 						    event.motion.x,
 						    event.motion.y,
@@ -129,17 +129,17 @@ namespace SDLmm {
 							 event.button.x,
 							 event.button.y);
 	break;
-      case SDL_MOUSEBUTTONUP: 
+      case SDL_MOUSEBUTTONUP:
 	ev_handled = handler.HandleMouseButtonReleaseEvent(event.button.button,
 							   event.button.x,
 							   event.button.y);
 	break;
-      case SDL_JOYAXISMOTION: 
+      case SDL_JOYAXISMOTION:
 	ev_handled = handler.HandleJoyAxisEvent(event.jaxis.which,
 						event.jaxis.axis,
 						event.jaxis.value);
 	break;
-      case SDL_JOYBALLMOTION: 
+      case SDL_JOYBALLMOTION:
 	ev_handled = handler.HandleJoyBallEvent(event.jball.which,
 						event.jball.ball,
 						event.jball.xrel,
@@ -154,20 +154,20 @@ namespace SDLmm {
 	ev_handled = handler.HandleJoyButtonPressEvent(event.jbutton.which,
 						       event.jbutton.button);
 	break;
-      case SDL_JOYBUTTONUP: 
+      case SDL_JOYBUTTONUP:
 	ev_handled = handler.HandleJoyButtonReleaseEvent(event.jbutton.which,
 							 event.jbutton.button);
 	break;
-      case SDL_QUIT: 
+      case SDL_QUIT:
 	ev_handled = handler.HandleQuitEvent();
 	break;
-      case SDL_SYSWMEVENT: 
+      case SDL_SYSWMEVENT:
 	ev_handled = handler.HandleSysWMEvent();
 	break;
       case SDL_VIDEORESIZE:
 	ev_handled = handler.HandleResizeEvent(event.resize.w, event.resize.h);
 	break;
-      case SDL_USEREVENT: 
+      case SDL_USEREVENT:
 	ev_handled = handler.HandleUserEvent(event.user.type,
 					     event.user.code,
 					     event.user.data1,

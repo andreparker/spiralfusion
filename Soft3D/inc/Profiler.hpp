@@ -14,7 +14,7 @@ namespace Util
 	class FunctionProfileData
 	{
 		public:
-			FunctionProfileData(const char* functionName ): 
+			FunctionProfileData(const char* functionName ):
 			  m_functionName( functionName ),m_samples(0),m_stackDepth(0),
 			  m_microsec(0),m_microsecTmp(0){}
 
@@ -40,7 +40,7 @@ namespace Util
 			boost::uint32_t m_microsecTmp;
 	};
 
-	
+
 
 	class FunctionProfileMgr
 	{
@@ -71,9 +71,9 @@ namespace Util
 			// this must be called in the profiles destructor
 			void End();
 
-		
+
 		protected:
-			
+
 			// push a function name onto the stack
 			boost::uint32_t push( FuncItr profileItr, const char* funcName );
 
@@ -82,7 +82,7 @@ namespace Util
 				const char* funcName;
 				FuncItr itr;		// a iterator to the function profile for easy insertion of new profiles
 			};
-			
+
 
 			FuncItr _FindFunctionCallee( FuncItr caller, const char* funcName );
 
@@ -102,7 +102,7 @@ namespace Util
 	};
 }
 
-#if defined(FUNCTION_PROFILING)
+#if 1//defined(FUNCTION_PROFILING)
 #define PROFILE_FUNCTION() Util::FunctionProfile functionProfile( __FUNCTION__ )
 #define PROFILE_WRITE_DATA() Util::FunctionProfileMgr::singleton().WriteToFile("StdProfileData.data")
 #else

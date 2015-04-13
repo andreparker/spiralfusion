@@ -1,4 +1,4 @@
-#include "..\inc\SwVertexTransform.hpp"
+#include "../inc/SwVertexTransform.hpp"
 
 namespace Soft3D
 {

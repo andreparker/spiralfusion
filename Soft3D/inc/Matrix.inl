@@ -7,7 +7,7 @@
 #include "Vector3.inl"
 #include "Vector4.inl"
 #include "SineCosine.inl"
-#include "Utility.hpp"
+#include "utility.hpp"
 #include <iostream>
 
 namespace MathUtil
@@ -102,9 +102,9 @@ namespace MathUtil
 			{
 				Vector3< _realType > result;
 
-				result.x = vector.x * _m11 + vector.y * _m12 + vector.z * _m13 + vector.w * _m14;
-				result.y = vector.x * _m21 + vector.y * _m22 + vector.z * _m23 + vector.w * _m24;
-				result.z = vector.x * _m31 + vector.y * _m32 + vector.z * _m33 + vector.w * _m34;
+				result.x = vector.x * mat._m11 + vector.y * mat._m12 + vector.z * mat._m13 + vector.w * mat._m14;
+				result.y = vector.x * mat._m21 + vector.y * mat._m22 + vector.z * mat._m23 + vector.w * mat._m24;
+				result.z = vector.x * mat._m31 + vector.y * mat._m32 + vector.z * mat._m33 + vector.w * mat._m34;
 
 				return result;
 			}
@@ -191,16 +191,22 @@ namespace MathUtil
 				_m41 = 0.0f;_m42 = 0.0f;_m43 = 0.0f;_m44 = 1.0f;
 			}
 
-			
-		
+
+            /*
 			struct{
 
 				_realType _m11,_m12,_m13,_m14;
 				_realType _m21,_m22,_m23,_m24;
 				_realType _m31,_m32,_m33,_m34;
 				_realType _m41,_m42,_m43,_m44;
-			};
-			
+			};*/
+
+			protected:
+                _realType _m11,_m12,_m13,_m14;
+				_realType _m21,_m22,_m23,_m24;
+				_realType _m31,_m32,_m33,_m34;
+				_realType _m41,_m42,_m43,_m44;
+
 	};
 
 	//--------------------------------------------------------------------------------------------------------------------------------------

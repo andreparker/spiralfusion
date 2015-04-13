@@ -1,7 +1,7 @@
 #ifndef TEXTURE_HPP
 #define TEXTURE_HPP
 
-#include "buffer.hpp"
+#include "Buffer.hpp"
 
 namespace Soft3D
 {

@@ -41,8 +41,11 @@ namespace Soft3D
 	template< class _Real >
 	inline _Real TriangleGradient(const MathUtil::Vector2< _Real >& v0, const MathUtil::Vector2< _Real >& v1, const MathUtil::Vector2< _Real >& v2 )
 	{
-		MathUtil::Vector2< _Real > n0( v2.x - v1.x, v0.y - v1.y );
-		MathUtil::Vector2< _Real > n1( v0.x - v1.x, v2.y - v1.y );
+		//MathUtil::Vector2< _Real > n0( v2.x - v1.x, v0.y - v1.y );
+		//MathUtil::Vector2< _Real > n1( v0.x - v1.x, v2.y - v1.y );
+
+        MathUtil::Vector2< _Real > n0( v0.x - v1.x, v0.y - v1.y );
+		MathUtil::Vector2< _Real > n1( v2.x - v1.x, v2.y - v1.y );
 
 		return n0.y * n0.x - n1.y * n1.x;
 	}

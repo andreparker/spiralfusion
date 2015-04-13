@@ -1,10 +1,11 @@
 #include "../inc/IndexBuffer16.hpp"
+#include <string.h>
 
 
 namespace Soft3D
 {
 	IndexBuffer16::IndexBuffer16( boost::uint32_t elementCount ):
-		Buffer( elementCount, 1 ) 
+		Buffer( elementCount, 1 )
 	{
 	}
 
@@ -16,8 +17,6 @@ namespace Soft3D
 		boost::uint16_t* sourcePtr = NULL;
 		if( dataPtr && indexBuffer.lockBuffer( sourcePtr ) )
 		{
-			
-
 			memcpy( dataPtr, sourcePtr, sizeBytes );
 
 			indexBuffer.unlockBuffer();

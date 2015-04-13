@@ -1,17 +1,17 @@
 /*
  * SDLmm - a C++ wrapper for SDL and related libraries
  * Copyright © 2001 David Hedbor <david@hedbor.org>
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -19,7 +19,7 @@
  */
 
 #include "sdlmm_config.h"
-RCSID("$Id: sdlmm_basesurface.cpp,v 1.17 2001/07/16 22:32:43 neotron Exp $");
+//RCSID("$Id: sdlmm_basesurface.cpp,v 1.17 2001/07/16 22:32:43 neotron Exp $");
 
 #include <SDL.h>
 #include "sdlmm_basesurface.h"
@@ -164,7 +164,7 @@ namespace SDLmm {
       ASSERT(false);
       return 0;
       break;
-    }  
+    }
   }
 
   int BaseSurface::Blit(const BaseSurface& src, const SDL_Rect& srcrect, SDL_Rect& dstrect) {
@@ -186,7 +186,7 @@ namespace SDLmm {
     rect.x = dstpoint.x; rect.y = dstpoint.y;
     return Blit(src, rect);
   }
-  
+
   int BaseSurface::Blit(const BaseSurface& src) {
     return SDL_BlitSurface(src.me, 0, me, 0);
   }
@@ -203,19 +203,19 @@ namespace SDLmm {
   bool BaseSurface::SetColorKey(Uint32 flag, Color key) {
     return SDL_SetColorKey(me, flag, key) == 0;
   }
-  
+
   bool BaseSurface::SetAlpha(Uint32 flag, Uint8 alpha) {
     return SDL_SetAlpha(me, flag, alpha) == 0;
   }
-  
+
   void BaseSurface::SetClipRect(const SDL_Rect& rect) {
     SDL_SetClipRect(me, const_cast<SDL_Rect*>(&rect));
   }
-  
+
   void BaseSurface::ResetClipRect() {
     SDL_SetClipRect(me, 0);
   }
-  
+
   void BaseSurface::GetClipRect(SDL_Rect& rect) const {
     SDL_GetClipRect(me, &rect);
   }
@@ -225,5 +225,5 @@ namespace SDLmm {
       return SDL_SaveBMP(me, file) == 0;
     }
     return false;
-  } 
+  }
 }

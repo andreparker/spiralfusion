@@ -7,17 +7,36 @@
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
 #define GET_MICRO_SECS GetTickCount
+#elif defined(__linux__) || !defined(WIN32)
+#define GET_MICRO_SECS GetMicroSecs_linux
 #else
 #define GET_MICRO_SECS
 #endif
 
 
+#if defined(__linux__) || !defined(WIN32)
+#include <sys/time.h>
+#include <time.h>
+#endif
 
 namespace Util
 {
 	// current function name for _FindFunctionCallee
 	const char* _currentFuncName = NULL;
 
+#ifdef __linux__ || !defined(WIN32)
+    boost::uint32_t GetMicroSecs_linux()
+    {
+        timespec tv;
+        boost::uint32_t val = 0;
+        if(!clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &tv))
+        {
+            val = tv.tv_nsec / 1000;
+        }
+
+        return val;
+    }
+#endif
 	FunctionProfileMgr::FunctionProfileMgr()
 	{
 
@@ -115,7 +134,7 @@ namespace Util
 		{
 			BOOST_FOREACH( FunctionProfileData* profilePtr, m_FunctionProfiles )
 			{
-				profileData << "\"" << profilePtr->GetName() << "\"" << "," << profilePtr->GetStackDepth() 
+				profileData << "\"" << profilePtr->GetName() << "\"" << "," << profilePtr->GetStackDepth()
 					<< "," << profilePtr->GetMicrosecs() << "," << profilePtr->GetSamples() << std::endl;
 			}
 

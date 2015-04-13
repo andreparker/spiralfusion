@@ -14,7 +14,7 @@ namespace Soft3D
 	{
 		protected:
 			_Real m_wGradient;
-		
+
 		public:
 
 			struct GradientData
@@ -33,7 +33,7 @@ namespace Soft3D
 			{
 				GradientData data;
 				data.w = m_wGradient;
-				
+
 				return data;
 			}
 
@@ -62,7 +62,7 @@ namespace Soft3D
 			_Real m_nGradient;
 			_Real m_tGradient;
 			_Real m_wGradient;
-		
+
 		public:
 
 			struct GradientData
@@ -86,7 +86,7 @@ namespace Soft3D
 				data.n = m_nGradient;
 				data.t = m_tGradient;
 				data.w = m_wGradient;
-				
+
 
 				return data;
 			}
@@ -94,22 +94,22 @@ namespace Soft3D
 			void SetupGradients( const Tex1VertexType& v0, const Tex1VertexType& v1, const Tex1VertexType& v2 )
 			{
 				// calculate texture u,v,n,t,w gradients based of y
-				MathUtil::Vector2< _Real > c0( v0.x, v0.y ), c1( v1.x, v1.y ), c2( v2.x, v2.y );
-				MathUtil::Vector2< _Real > u0( v0.u, v0.y ), u1( v1.u, v1.y ), u2( v2.u, v2.y );
-				MathUtil::Vector2< _Real > v0( v0.v, v0.y ), v1( v1.v, v1.y ), v2( v2.v, v2.y );
-				MathUtil::Vector2< _Real > n0( v0.n, v0.y ), n1( v1.n, v1.y ), n2( v2.n, v2.y );
-				MathUtil::Vector2< _Real > t0( v0.t, v0.y ), t1( v1.t, v1.y ), t2( v2.t, v2.y );
+				MathUtil::Vector2< _Real > _c0( v0.x, v0.y ), _c1( v1.x, v1.y ), _c2( v2.x, v2.y );
+				MathUtil::Vector2< _Real > _u0( v0.u, v0.y ), _u1( v1.u, v1.y ), _u2( v2.u, v2.y );
+				MathUtil::Vector2< _Real > _v0( v0.v, v0.y ), _v1( v1.v, v1.y ), _v2( v2.v, v2.y );
+				MathUtil::Vector2< _Real > _n0( v0.n, v0.y ), _n1( v1.n, v1.y ), _n2( v2.n, v2.y );
+				MathUtil::Vector2< _Real > _t0( v0.t, v0.y ), _t1( v1.t, v1.y ), _t2( v2.t, v2.y );
 
 				// inverse w for perspective correction
-				MathUtil::Vector2< _Real > w0( 1/v0.w, v0.y ), w1( 1/v1.w, v1.y ), w2( 1/v2.w, v2.y );
+				MathUtil::Vector2< _Real > _w0( 1/v0.w, v0.y ), _w1( 1/v1.w, v1.y ), _w2( 1/v2.w, v2.y );
 
 				// calculate determinants
-				_Real inv_ydet = 1 / TriangleGradient( c0, c1, c2 );
-				_Real udet = TriangleGradient( u0, u1, u2 );
-				_Real vdet = TriangleGradient( v0, v1, v2 );
-				_Real ndet = TriangleGradient( n0, n1, n2 );
-				_Real tdet = TriangleGradient( t0, t1, t2 );
-				_Real wdet = TriangleGradient( w0, w1, w2 );
+				_Real inv_ydet = 1 / TriangleGradient( _c0, _c1, _c2 );
+				_Real udet = TriangleGradient( _u0, _u1, _u2 );
+				_Real vdet = TriangleGradient( _v0, _v1, _v2 );
+				_Real ndet = TriangleGradient( _n0, _n1, _n2 );
+				_Real tdet = TriangleGradient( _t0, _t1, _t2 );
+				_Real wdet = TriangleGradient( _w0, _w1, _w2 );
 
 				// divide by y to get gradient
 				m_uGradient = udet * inv_ydet;

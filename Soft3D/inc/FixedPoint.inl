@@ -21,7 +21,7 @@ namespace FixedPoint
 	inline void _inner_sqrt( boost::uint32_t& val,boost::uint32_t& g, boost::uint32_t& b, boost::uint32_t& bShift );
 
 	//=========================================================================
-	template< int _bits > 
+	template< int _bits >
 	struct fixed_data;
 	/*{
 		fixed_data( void ){}
@@ -29,54 +29,54 @@ namespace FixedPoint
 		data( _val ){}
 
 		typedef boost::int8_t FIXED_TYPE;
-		char data; 
+		char data;
 	};*/
 
 	template<> struct fixed_data< 1 >
-	{ 
+	{
 		fixed_data( ){}
 		fixed_data( const char& _val ):
 		data( _val ){}
 
 		typedef boost::int8_t FIXED_TYPE;
-		char data; 
+		char data;
 	};
 
 	template<> struct fixed_data< 2 >
-	{ 
+	{
 		fixed_data( ){}
 		fixed_data( const short& _val ):
 		data( _val ){}
 
 		typedef boost::int16_t FIXED_TYPE;
-		short data; 
+		short data;
 	};
 
 	template<> struct fixed_data< 3 >
-	{ 
+	{
 		fixed_data( ){}
 		fixed_data( const int& _val ):
 		data( _val ){}
 
 		typedef boost::int32_t FIXED_TYPE;
-		int data; 
+		int data;
 	};
 
 	template<> struct fixed_data< 4 >
-	{ 
+	{
 		fixed_data( ){}
 		fixed_data( const long& _val ):
 		data( _val ){}
 
 		typedef boost::int32_t FIXED_TYPE;
-		long data; 
+		long data;
 	};
 
 
 	template< boost::uint32_t _whole,
 		      boost::uint32_t _frac,
-			  typename _Real = 
-			  fixed_data< 
+			  typename _Real =
+			  fixed_data<
 			  ( ( _whole + _frac) >= 32 ? 1 : 0 ) +
 			  ( ( _whole + _frac) >= 24 ? 1 : 0 ) +
 			  ( ( _whole + _frac) >= 16 ? 1 : 0 ) +
@@ -95,7 +95,7 @@ namespace FixedPoint
 
 		typedef fxReal<_whole,_frac,_Real>          fixedType;
 
-		
+
 
 		static const boost::uint32_t _IntegerBits = _whole;
 		static const boost::uint32_t _FracBits    = _frac;
@@ -112,37 +112,37 @@ namespace FixedPoint
 		}
 
 		fxReal( float f ):
-		m_data(static_cast< typename data_type >(f * static_cast< float >(1 << _frac)))
+		m_data(static_cast< data_type >(f * static_cast< float >(1 << _frac)))
 		{}
 
 		fxReal( double f ):
-		m_data(static_cast< typename data_type >(f * static_cast< double >(1 << _frac)))
+		m_data(static_cast< data_type >(f * static_cast< double >(1 << _frac)))
 		{}
 
 		template< typename _custom >
 		fxReal( _custom _val ):
-		m_data(static_cast< typename data_type >( _val << _frac ))
+		m_data(static_cast< data_type >( _val << _frac ))
 		{}
 
-		inline typename fixedType const& operator=( fixedType fixed )
+		inline fixedType const& operator=( fixedType fixed )
 		{
 			m_data.data = fixed.Raw();
 			return *this;
 		}
 
-		inline typename data_type Raw( void )const { return m_data.data; }
-		inline typename fixedType& AsRaw( typename data_type _val )
+		inline data_type Raw( void )const { return m_data.data; }
+		inline fixedType& AsRaw( data_type _val )
 		{
 			m_data.data = _val;
 			return *this;
 		}
 
-		static typename fixedType AS_RAW( typename data_type _val )
+		static fixedType AS_RAW( data_type _val )
 		{
 			return fixedType().AsRaw( _val );
 		}
 
-		inline typename fixedType Frac()const
+		inline fixedType Frac()const
 		{
 			return AS_RAW( Raw() & _LowMask );
 		}
@@ -154,51 +154,51 @@ namespace FixedPoint
 		operator double( void )const{ return static_cast< double >(  Raw()  * ( 1.0 / _FIX_ONE ) ); };
 		template< typename _custom > operator _custom( void )const{ return static_cast< _custom >( Raw() >> _frac ); }
 
-		
-		inline typename fixedType operator+( float fl )const
+
+		inline fixedType operator+( float fl )const
 		{
 			return *this + fixedType( fl );
 		}
 
-		inline typename fixedType operator-( float fl )const
+		inline fixedType operator-( float fl )const
 		{
 			return *this - fixedType( fl );
 		}
 
-		inline typename fixedType operator*( float fl )const
+		inline fixedType operator*( float fl )const
 		{
 			return *this * fixedType( fl );
 		}
 
-		inline typename fixedType operator/( float fl )const
+		inline fixedType operator/( float fl )const
 		{
 			return *this / fixedType( fl );
 		}
 
-		inline typename fixedType operator-()const
+		inline fixedType operator-()const
 		{
 			return AS_RAW( -Raw() );
 		}
 		//===========================================================
-		inline typename fixedType& operator+=( float fl )
+		inline fixedType& operator+=( float fl )
 		{
 			*this = *this + fixedType( fl );
 			return *this;
 		}
 
-		inline typename fixedType& operator-=( float fl )
+		inline fixedType& operator-=( float fl )
 		{
 			*this = *this - fixedType( fl );
 			return *this;
 		}
 
-		inline typename fixedType& operator*=( float fl )
+		inline fixedType& operator*=( float fl )
 		{
 			*this = *this * fixedType( fl );
 			return *this;
 		}
 
-		inline typename fixedType& operator/=( float fl )
+		inline fixedType& operator/=( float fl )
 		{
 			*this = *this / fixedType( fl );
 			return *this;
@@ -208,46 +208,46 @@ namespace FixedPoint
 		//==========================================================
 		// double operators
 		//==========================================================
-		inline typename fixedType operator+( double fl )const
+		inline fixedType operator+( double fl )const
 		{
 			return *this + fixedType( fl );
 		}
 
-		inline typename fixedType operator-( double fl )const
+		inline fixedType operator-( double fl )const
 		{
 			return *this - fixedType( fl );
 		}
 
-		inline typename fixedType operator*( double fl )const
+		inline fixedType operator*( double fl )const
 		{
 			return *this * fixedType( fl );
 		}
 
-		inline typename fixedType operator/( double fl )const
+		inline fixedType operator/( double fl )const
 		{
 			return *this / fixedType( fl );
 		}
 
 		//===========================================================
-		inline typename fixedType& operator+=( double fl )
+		inline fixedType& operator+=( double fl )
 		{
 			*this = *this + fixedType( fl );
 			return *this;
 		}
 
-		inline typename fixedType& operator-=( double fl )
+		inline fixedType& operator-=( double fl )
 		{
 			*this = *this - fixedType( fl );
 			return *this;
 		}
 
-		inline typename fixedType& operator*=( double fl )
+		inline fixedType& operator*=( double fl )
 		{
 			*this = *this * fixedType( fl );
 			return *this;
 		}
 
-		inline typename fixedType& operator/=( double fl )
+		inline fixedType& operator/=( double fl )
 		{
 			*this = *this / fixedType( fl );
 			return *this;
@@ -256,54 +256,54 @@ namespace FixedPoint
 		//==========================================================
 		// _custom operators
 		//==========================================================
-		template< typename _cType > 
-		typename fixedType operator+( _cType _val )const
+		template< typename _cType >
+		fixedType operator+( _cType _val )const
 		{
 			return *this + fixedType( _val );
 		}
 
-		template< typename _cType > 
-		typename fixedType operator-( _cType _val )const
+		template< typename _cType >
+		fixedType operator-( _cType _val )const
 		{
 			return *this - fixedType( _val );
 		}
 
-		template< typename _cType > 
-		typename fixedType operator*( _cType _val )const
+		template< typename _cType >
+		fixedType operator*( _cType _val )const
 		{
 			return AS_RAW( Raw() * _val );
 		}
 
 		template< typename _cType >
-		typename fixedType operator/( _cType _val )const
+		fixedType operator/( _cType _val )const
 		{
 			return AS_RAW( Raw() / _val );
 		}
 
 		//===========================================================
 		template< typename _cType >
-		typename fixedType& operator+=( _cType _val )
+		fixedType& operator+=( _cType _val )
 		{
 			*this = *this + fixedType( _val );
 			return *this;
 		}
 
 		template< typename _cType >
-		typename fixedType& operator-=( _cType _val )
+		fixedType& operator-=( _cType _val )
 		{
 			*this = *this - fixedType( _val );
 			return *this;
 		}
 
 		template< typename _cType >
-		typename fixedType& operator*=( _cType _val )
+		fixedType& operator*=( _cType _val )
 		{
 			AsRaw( Raw() * _val );
 			return *this;
 		}
 
 		template< typename _cType >
-		typename fixedType& operator/=( _cType _val )
+		fixedType& operator/=( _cType _val )
 		{
 			AsRaw( Raw() / _val );
 			return *this;
@@ -365,98 +365,98 @@ namespace FixedPoint
 			return (Raw() != fixed.Raw()) ? true : false;
 		}
 
-		inline typename fixedType operator*( fixedType fixed )const
+		inline fixedType operator*( fixedType fixed )const
 		{
-			return AS_RAW( static_cast< typename data_type >( 
-				(static_cast< boost::int64_t >( fixed.Raw() ) * Raw() ) >> _frac    
+			return AS_RAW( static_cast< data_type >(
+				(static_cast< boost::int64_t >( fixed.Raw() ) * Raw() ) >> _frac
 				) );
 		}
 
-		inline typename fixedType operator/( fixedType fixed )const
+		inline fixedType operator/( fixedType fixed )const
 		{
-			return AS_RAW( static_cast< typename data_type >(
-				( static_cast< boost::int64_t >( Raw() ) << _frac )  / fixed.Raw() 
+			return AS_RAW( static_cast< data_type >(
+				( static_cast< boost::int64_t >( Raw() ) << _frac )  / fixed.Raw()
 				) );
 		}
 
-		inline typename fixedType operator+( fixedType fixed )const
+		inline fixedType operator+( fixedType fixed )const
 		{
 			return AS_RAW( Raw() + fixed.Raw() );
 		}
 
-		inline typename fixedType operator-( fixedType fixed )const
+		inline fixedType operator-( fixedType fixed )const
 		{
 			return AS_RAW( Raw() - fixed.Raw() );
 		}
 
-		inline typename fixedType& operator*=( fixedType fixed )
+		inline fixedType& operator*=( fixedType fixed )
 		{
 			*this = *this * fixed;
 			return *this;
 		}
 
-		inline typename fixedType& operator/=( fixedType fixed )
+		inline fixedType& operator/=( fixedType fixed )
 		{
 			*this = *this / fixed;
 			return *this;
 		}
 
-		inline typename fixedType& operator+=( fixedType fixed )
+		inline fixedType& operator+=( fixedType fixed )
 		{
 			*this = *this + fixed;
 			return *this;
 		}
 
-		inline typename fixedType& operator-=( fixedType fixed )
+		inline fixedType& operator-=( fixedType fixed )
 		{
 			*this = *this - fixed;
 			return *this;
 		}
 
 		template< typename _cType >
-		friend typename fixedType operator+( _cType _val, fixedType fixed )
+		friend fixedType operator+( _cType _val, fixedType fixed )
 		{
 			return fixed + fixedType(_val);
 		}
 
 		template< typename _cType >
-		friend typename fixedType operator-( _cType _val, fixedType fixed )
+		friend fixedType operator-( _cType _val, fixedType fixed )
 		{
 			return fixedType( _val ) - fixed;
 		}
 
 		template< typename _cType >
-		friend typename fixedType operator*( _cType _val, fixedType fixed )
+		friend fixedType operator*( _cType _val, fixedType fixed )
 		{
-			return AS_RAW( static_cast< typename data_type>(fixed.Raw() * _val) );
+			return AS_RAW( static_cast< data_type>(fixed.Raw() * _val) );
 		}
 
-		friend typename fixedType operator*( const float _val, fixedType fixed )
+		friend fixedType operator*( const float _val, fixedType fixed )
 		{
-			return AS_RAW( static_cast< typename data_type>(fixed.Raw() * fixedType(_val)) );
+			return AS_RAW( static_cast< data_type>(fixed.Raw() * fixedType(_val)) );
 		}
 
-		friend typename fixedType operator*( const double _val, fixedType fixed )
+		friend fixedType operator*( const double _val, fixedType fixed )
 		{
-			return AS_RAW( static_cast< typename data_type>(fixed.Raw() * fixedType(_val)) );
+			return AS_RAW( static_cast< data_type>(fixed.Raw() * fixedType(_val)) );
 		}
 
 		template< typename _cType >
-		friend typename fixedType operator/( _cType _val, fixedType fixed )
+		friend fixedType operator/( _cType _val, fixedType fixed )
 		{
 			fixedType tmp( _val );
 			return tmp / fixed;
 		}
 
-		friend typename fixedType Ceil( fixedType fixed )
+		friend fixedType Ceil( fixedType fixed )
 		{
 			return AS_RAW( (fixed.Raw() + fixedType::_LowMask) &
 								fixedType::_HighMask
 							);
 		}
 
-		
-		friend typename fixedType Min( fixedType fixed0,
+
+		friend fixedType Min( fixedType fixed0,
 			                           fixedType fixed1 )
 		{
 			const fixedType value = fixed0 - fixed1;
@@ -465,7 +465,7 @@ namespace FixedPoint
 
 		}
 
-		friend typename fixedType Max( fixedType fixed0,
+		friend fixedType Max( fixedType fixed0,
 			fixedType fixed1 )
 		{
 			const fixedType value = fixed0 - fixed1;
@@ -479,13 +479,13 @@ namespace FixedPoint
 			return AS_RAW(( val0.Raw() < 0 ? -val0.Raw() : val0.Raw() ) );
 		}
 
-		
+
 	private:
 
 		_Real m_data;
 	};
 
-	
+
 
 	template< typename T >
 	inline T Min( T val0,T val1 )
@@ -569,9 +569,9 @@ namespace FixedPoint
 			_inner_sqrt( val, g, b, shift );
 		}while( b >>= 1 );
 
-		return fxReal<w,f>::AS_RAW( ConvertFixed< fxReal<w,f>::data_type, 
-									(fxReal<w,f>::_FracBits >> 1), 
-									fxReal<w,f>::_FracBits >( static_cast< fxReal<w,f>::data_type >( g ) ) );
+		return fxReal<w,f>::AS_RAW( ConvertFixed< fxReal<w,f>::data_type,
+									(fxReal<w,f>::_FracBits >> 1),
+									fxReal<w,f>::_FracBits >( static_cast< typename fxReal<w,f>::data_type >( g ) ) );
 	}
 
 	template< typename T >

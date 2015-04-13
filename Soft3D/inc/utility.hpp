@@ -18,11 +18,11 @@ namespace Soft3D
 	{
 		if( count )
 		{
-			boost::uint32_t wholeCount = (count + 7) >> 3; // count + 7 / 8
-			
+			boost::int32_t wholeCount = static_cast<boost::int32_t>((count + 7) >> 3); // count + 7 / 8
+
 			switch( count & 7 ) // count % 8
 			{
-				
+
 					do
 					{
 				case 0: *dstPtr++ = *srcPtr++;
@@ -33,7 +33,7 @@ namespace Soft3D
 				case 3: *dstPtr++ = *srcPtr++;
 				case 2: *dstPtr++ = *srcPtr++;
 				case 1: *dstPtr++ = *srcPtr++;
-					}while( --wholeCount );
+					}while( --wholeCount > 0);
 			}
 		}
 	}
@@ -43,18 +43,18 @@ namespace Soft3D
 	{
 		if( count )
 		{
-			boost::uint32_t wholeCount = (count + 3) >> 2; // count + 3 / 4
-			
+			boost::int32_t wholeCount = static_cast<boost::int32_t>((count + 3) >> 2); // count + 3 / 4
+
 			switch( count & 3 ) // count % 4
 			{
-				
+
 					do
 					{
 				case 0: *dstPtr++ = *srcPtr++;
 				case 3: *dstPtr++ = *srcPtr++;
 				case 2: *dstPtr++ = *srcPtr++;
 				case 1: *dstPtr++ = *srcPtr++;
-					}while( --wholeCount );
+					}while( --wholeCount > 0);
 			}
 		}
 	}
@@ -67,11 +67,11 @@ namespace Soft3D
 	{
 		if( count )
 		{
-			boost::uint32_t wholeCount = (count + 7) >> 3; // count + 7 / 8
-			
+			boost::int32_t wholeCount = static_cast<boost::int32_t>((count + 7) >> 3); // count + 7 / 8
+
 			switch( count & 7 ) // count % 8
 			{
-				
+
 					do
 					{
 				case 0: *dstPtr++ = value;
@@ -82,7 +82,7 @@ namespace Soft3D
 				case 3: *dstPtr++ = value;
 				case 2: *dstPtr++ = value;
 				case 1: *dstPtr++ = value;
-					}while( --wholeCount );
+					}while( --wholeCount > 0);
 			}
 		}
 	}
@@ -92,18 +92,18 @@ namespace Soft3D
 	{
 		if( count )
 		{
-			boost::uint32_t wholeCount = (count + 3) >> 2; // count + 3 / 4
-			
+			boost::int32_t wholeCount = static_cast<boost::int32_t>((count + 3) >> 2); // count + 3 / 4
+
 			switch( count & 3 ) // count % 4
 			{
-				
+
 					do
 					{
 				case 0: *dstPtr++ = value;
 				case 3: *dstPtr++ = value;
 				case 2: *dstPtr++ = value;
 				case 1: *dstPtr++ = value;
-					}while( --wholeCount );
+					}while( --wholeCount > 0);
 			}
 		}
 	}

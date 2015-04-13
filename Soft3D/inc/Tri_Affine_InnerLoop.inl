@@ -22,8 +22,8 @@ namespace Soft3D
 							FragmentProgram& fragmentProg,
 							SurfaceInfo< FrameBufferType, DepthBufferType >& info )
 	{
-		typedef PolygonEdge< _Real, VertexType >::EdgeData EdgeData;
-		typedef PolygonGradient< _Real, VertexType >::GradientData GradientData;
+		typedef typename PolygonEdge< _Real, VertexType >::EdgeData EdgeData;
+		typedef typename PolygonGradient< _Real, VertexType >::GradientData GradientData;
 
 		PROFILE_FUNCTION();
 
@@ -50,7 +50,7 @@ namespace Soft3D
 
 			currentScanLinePtr = &info.SurfaceDataPtr[ leftX ];
 
-			Soft3D::duff_copy4( currentPixel, currentScanLinePtr, scanSize );
+			Soft3D::duff_copy4( currentPixel, currentScanLinePtr, scanSize+1 );
 
 			currentScanLinePtr += scanSize;
 

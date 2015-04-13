@@ -19,7 +19,7 @@ class Decorator : public _ComponentClass
 		}
 
 	protected:
-		Decorator( boost::shared_ptr< _ComponentClass >& componentPtr ):
+		Decorator( boost::shared_ptr< _ComponentClass > componentPtr ):
 		  m_componentPtr( componentPtr ){}
 
 		boost::shared_ptr< _ComponentClass > m_componentPtr;

@@ -1,4 +1,4 @@
-#include <sdl.h>
+#include <SDL.h>
 #include "SDL_Wrapper/sdlmm.h"
 #include "inc/Soft3D.hpp"
 #include "inc/DefaultFragmentProgram.hpp"
@@ -49,7 +49,7 @@ int main( int argc, char** argv )
 	PROFILE_FUNCTION();
 	Soft3DMgrHdl mgrHandle;
 
-	
+
 	// allocate a vertex buffer of 3 verts
 	VertexBuffer vertexBuffer0( VBFLAG_4C_COLOR | VBFLAG_4C_UV1 , 3 );
 	VertexBuffer vertexBuffer1( vertexBuffer0 );
