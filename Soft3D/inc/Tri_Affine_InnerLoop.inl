@@ -53,8 +53,6 @@ namespace Soft3D
 			//Soft3D::duff_copy4( currentPixel, currentScanLinePtr, scanSize+1 );
 			InterpolateScanLine< FrameBufferType, _Real,  PolygonEdge< _Real, VertexType > >(left,right,fragmentProg,currentScanLinePtr);
 
-			currentScanLinePtr += scanSize;
-
 			left.Step();
 			right.Step();
 			info.Step();

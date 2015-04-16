@@ -91,6 +91,9 @@ namespace Soft3D
 				FATTR_COLOR2,
 				FATTR_MISC,
 				FATTR_RES_1,
+				FATTR_REG0,
+				FATTR_REG1,
+				FATTR_REG2,
 			};
 
 			// used to return a sample

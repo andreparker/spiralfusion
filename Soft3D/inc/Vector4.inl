@@ -13,7 +13,7 @@ namespace MathUtil
 		x(_x),y(_y),z(_z),w(_w){}
 		Vector4( const Vector4& vec ):
 		x(vec.x),y(vec.y),z(vec.z),w(vec.w){}
-		
+
 		inline Vector4 operator+( const Vector4& vec )const
 		{
 			return Vector4( x+vec.x,y+vec.y,z+vec.z,w+vec.w );
@@ -132,6 +132,17 @@ namespace MathUtil
 	{
 		return vec0.x * vec1.x + vec0.y * vec1.y + vec0.z * vec1.z + vec0.w * vec1.w;
 	}
+
+    template< typename T >
+    inline Vector4< T >& clamp( Vector4< T >& vec0, T val )
+    {
+        vec0.x = vec0.x > val ? val : ( vec0.x < 0.0f ? 0.0f : vec0.x );
+        vec0.y = vec0.y > val ? val : ( vec0.y < 0.0f ? 0.0f : vec0.y );
+        vec0.x = vec0.z > val ? val : ( vec0.z < 0.0f ? 0.0f : vec0.z );
+        vec0.x = vec0.w > val ? val : ( vec0.w < 0.0f ? 0.0f : vec0.w );
+
+        return vec0;
+    }
 
 	template< typename T >
 	inline Vector4< T >& Normalize( const Vector4< T >& vec0, Vector4< T >& vecRet )

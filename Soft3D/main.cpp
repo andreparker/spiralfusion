@@ -6,6 +6,8 @@
 #include "inc/GeometryUtils.inl"
 #include "inc/VertexTypes.hpp"
 #include "inc/Profiler.hpp"
+#include <stdlib.h>
+#include <math.h>
 
 #pragma comment(lib,"Sdlmain")
 #pragma comment(lib,"sdl")
@@ -92,6 +94,13 @@ int main( int argc, char** argv )
 					displayInfo.SurfaceDataPtr = reinterpret_cast< boost::uint32_t* >( screen.pixels() );
 					displayInfo.DepthSurfaceDataPtr = NULL;
 
+
+                    static Real t = 0.5f;
+                    Real c = cos(t * 180 / 3.14) * 0.1f;
+                    Real s = sin(t * 180 / 3.14) * 0.1f;
+
+                    t += 0.01f;
+                    fragProg.SetVector(FragmentProgram::FATTR_REG0, FragmentProgram::vec4(c,s,t,1.0f));
 					TestAffineDraw( displayInfo );
 					screen.Unlock();
 				}

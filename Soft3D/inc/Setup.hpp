@@ -14,7 +14,7 @@ namespace Soft3D
 #endif
 
 	// number of registers allowed for programs
-	const boost::uint32_t max_register_count = 8;
+	const boost::uint32_t max_register_count = 16;
 
 	// number of textures allowed in a fragment program
 	const boost::uint32_t max_texture_count = 4;

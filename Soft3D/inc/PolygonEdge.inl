@@ -297,6 +297,46 @@ namespace Soft3D
 	};
 
 	template< class FrameBufferType, class _Real >
+	class InterpolateScanLine< FrameBufferType, _Real, PolygonEdge< _Real, Tex1VertexType > >
+	{
+        public:
+            InterpolateScanLine(const PolygonEdge< _Real, Tex1VertexType >& edge0, const PolygonEdge< _Real, Tex1VertexType >& edge1, FragmentProgram& program, FrameBufferType* scanLine)
+            {
+                typename PolygonEdge< _Real, Tex1VertexType >::EdgeData edge_data0 = edge0.GetEdgeData();
+                typename PolygonEdge< _Real, Tex1VertexType >::EdgeData edge_data1 = edge1.GetEdgeData();
+
+                boost::int32_t scanLineSize = static_cast< boost::int32_t >(FixedPoint::Ceil(edge_data1.x - edge_data0.x)) + 1;
+
+                _Real inv_scan = 1.0f / scanLineSize;
+
+                _Real y_Interpolant = inv_scan * (edge_data1.y - edge_data0.y);
+                _Real w_Interpolant = inv_scan * (edge_data1.w - edge_data0.w);
+                _Real u_Interpolant = inv_scan * (edge_data1.u - edge_data0.u);
+                _Real v_Interpolant = inv_scan * (edge_data1.v - edge_data0.v);
+                _Real n_Interpolant = inv_scan * (edge_data1.n - edge_data0.n);
+                _Real t_Interpolant = inv_scan * (edge_data1.t - edge_data0.t);
+
+                _Real u = edge_data0.u, v = edge_data0.v, n = edge_data0.n, t = edge_data0.t, w = edge_data0.w;
+
+                while( scanLineSize-- > 0)
+                {
+                    program.SetVector(FragmentProgram::FATTR_UV1, FragmentProgram::vec4(u * w,v * w,n * w,t * w));
+                    program.Execute();
+                    FrameBufferType pixel = program.Sample().Color();
+
+                    u += u_Interpolant;
+                    v += v_Interpolant;
+                    n += n_Interpolant;
+                    t += t_Interpolant;
+                    w += w_Interpolant;
+
+                    *scanLine = pixel;
+                    ++scanLine;
+                }
+            }
+	};
+
+	template< class FrameBufferType, class _Real >
 	class InterpolateScanLine< FrameBufferType, _Real, PolygonEdge< _Real, GouradVertexType > >
 	{
         public:
@@ -313,13 +353,13 @@ namespace Soft3D
                 _Real g_Interp = inv_scan * (edge_data1.g - edge_data0.g);
                 _Real b_Interp = inv_scan * (edge_data1.b - edge_data0.b);
                 _Real a_Interp = inv_scan * (edge_data1.a - edge_data0.a);
+                _Real w_Interp = inv_scan * (edge_data1.w - edge_data0.w);
 
-                _Real r = edge_data0.r, g = edge_data0.g, b = edge_data0.b, a = edge_data0.a;
+                _Real r = edge_data0.r, g = edge_data0.g, b = edge_data0.b, a = edge_data0.a, w = edge_data0.w;
 
-                _Real gradient = program.GetVector(FragmentProgram::FATTR_RES_1).x;
                 while( scanLineSize-- > 0)
                 {
-                    program.SetVector(FragmentProgram::FATTR_COLOR, FragmentProgram::vec4(r,g,b,a));
+                    program.SetVector(FragmentProgram::FATTR_COLOR, FragmentProgram::vec4(r * w,g * w,b * w,a * w));
 
                     program.Execute();
                     FrameBufferType pixel = program.Sample().Color();
@@ -329,6 +369,7 @@ namespace Soft3D
                     g += g_Interp;
                     b += b_Interp;
                     a += a_Interp;
+                    w += w_Interp;
 
                     ++scanLine;
                 }
