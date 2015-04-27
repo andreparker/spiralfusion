@@ -98,9 +98,10 @@ int main( int argc, char** argv )
                     static Real t = 0.5f;
                     Real c = cos(t * 180 / 3.14) * 0.1f;
                     Real s = sin(t * 180 / 3.14) * 0.1f;
+                    Real w = tan(t * 180 / 3.14) * 0.1f;
 
-                    t += 0.01f;
-                    fragProg.SetVector(FragmentProgram::FATTR_REG0, FragmentProgram::vec4(c,s,t,1.0f));
+                    t += 1.01f;
+                    fragProg.SetVector(FragmentProgram::FATTR_REG0, FragmentProgram::vec4(c,s,t,w));
 					TestAffineDraw( displayInfo );
 					screen.Unlock();
 				}

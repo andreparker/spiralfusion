@@ -21,11 +21,11 @@ namespace Soft3D
 			VertexType Clip( const VertexType& v1, const VertexType& v0 )const
 			{
 				_real ratio = InitClip( v1, v0 );
-				return VertexType( 
+				return VertexType(
 								lerp( v1.x, v0.x, ratio ),
 								lerp( v1.y, v0.y, ratio ),
 								lerp( v1.z, v0.z, ratio ),
-								v0.w );
+                                lerp( v1.w, v0.w, ratio ));
 			}
 
 		protected:
@@ -53,14 +53,14 @@ namespace Soft3D
 				Tex1VertexType clipVert;
 				_real ratio = InitClip( v1, v0 );
 
-				clipVert.w = v0.w;
+				clipVert.w = lerp( v1.w, v0.w, ratio );
 				clipVert.x = lerp( v1.x, v0.x, ratio );
 				clipVert.y = lerp( v1.y, v0.y, ratio );
 				clipVert.z = lerp( v1.z, v0.z, ratio );
 				clipVert.t = lerp( v1.t, v0.t, ratio );
 				clipVert.n = lerp( v1.n, v0.n, ratio );
 				clipVert.u = lerp( v1.u, v0.u, ratio );
-				
+
 				return clipVert;
 			}
 
@@ -88,7 +88,7 @@ namespace Soft3D
 				GouradVertexType clipVert;
 				_real ratio = InitClip( v1, v0 );
 
-				clipVert.w = v0.w;
+				clipVert.w = lerp( v1.w, v0.w, ratio );
 				clipVert.x = lerp( v1.x, v0.x, ratio );
 				clipVert.y = lerp( v1.y, v0.y, ratio );
 				clipVert.z = lerp( v1.z, v0.z, ratio );
@@ -96,7 +96,7 @@ namespace Soft3D
 				clipVert.r = lerp( v1.r, v0.r, ratio );
 				clipVert.g = lerp( v1.g, v0.g, ratio );
 				clipVert.b = lerp( v1.b, v0.b, ratio );
-				
+
 				return clipVert;
 			}
 

@@ -9,7 +9,7 @@
 
 namespace Soft3D
 {
-	
+
 	// vertex buffer flags
 	enum{
 		VBFLAG_4C_NORMAL = BIT_INT_VALUE( 0 ),
@@ -36,6 +36,8 @@ namespace Soft3D
 
 			void SetAttributes( const bit32& flags ){ m_flags = flags; }
 			const bit32& GetAttributes()const{ return m_flags; }
+			boost::uint32_t GetElementCount()const { return m_flags.count() * 4; }
+			boost::uint32_t GetElementStride()const { return GetElementCount() * sizeof(Real); }
 
 			bool isValid()const{ return m_isValid; }
 		protected:

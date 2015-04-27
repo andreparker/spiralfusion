@@ -25,22 +25,15 @@ namespace Soft3D
 			Mat4	m_Matrices[ max_register_count ]; // user defined matrix values
 			Vec4	m_Vectors[ max_register_count ]; // user defined vector values
 			Vec4*   m_VectorAttributes[ max_register_count ]; // holds a pointer to vertice information
-			
+
 			VertexBuffer* m_vertexStreamPtr;		// pointer to the vertex input
 			boost::uint32_t m_vertexCount;			// input vertex count
 			Real*		m_dataPtr;					// pointer to vertex elements
 		protected:
 
-			// sets the input source
-			void SetVertexInput( VertexBuffer& vertexInput ) { m_vertexStreamPtr = &vertexInput; }
-			// sets the vertex count
-			void SetVertexCount( boost::uint32_t vertexCount ){ m_vertexCount = vertexCount; }
 
-			// grabs the total vertex count
-			// use this to iterate through the vertices and grab attributes
-			boost::uint32_t GetVertexCount()const{ return m_vertexCount; }
 
-			// used for extracting and modifying vertice information 
+			// used for extracting and modifying vertice information
 
 			void BeginVectorAttr(); // used to begin extraction
 			void EndVectorAttr(); // ends extraction
@@ -52,7 +45,7 @@ namespace Soft3D
 			// used to set attr
 			void SetVectorAttr( boost::uint32_t index, Vec4& attr ) { m_VectorAttributes[ index ] = &attr; }
 
-			// user defined 
+			// user defined
 			const Vec4& GetVectorRegister( boost::uint32_t index )const { return m_Vectors[ index ]; }
 			const Mat4& GetMatrixRegister( boost::uint32_t index )const { return m_Matrices[ index ]; }
 
@@ -94,6 +87,15 @@ namespace Soft3D
 			// used to set user defined values
 			void SetMatrix( boost::uint32_t index, const Mat4& mat ) { m_Matrices[ index ] = mat; }
 			void SetVector( boost::uint32_t index, const Vec4& vector ) { m_Vectors[ index ] = vector; }
+
+			// sets the input source
+			void SetVertexInput( VertexBuffer& vertexInput ) { m_vertexStreamPtr = &vertexInput; }
+			// sets the vertex count
+			void SetVertexCount( boost::uint32_t vertexCount ){ m_vertexCount = vertexCount; }
+
+			// grabs the total vertex count
+			// use this to iterate through the vertices and grab attributes
+			boost::uint32_t GetVertexCount()const{ return m_vertexCount; }
 	};
 }
 

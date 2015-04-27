@@ -138,7 +138,7 @@ namespace MathUtil
     {
         vec0.x = vec0.x > val ? val : ( vec0.x < 0.0f ? 0.0f : vec0.x );
         vec0.y = vec0.y > val ? val : ( vec0.y < 0.0f ? 0.0f : vec0.y );
-        vec0.x = vec0.z > val ? val : ( vec0.z < 0.0f ? 0.0f : vec0.z );
+        vec0.z = vec0.z > val ? val : ( vec0.z < 0.0f ? 0.0f : vec0.z );
         vec0.x = vec0.w > val ? val : ( vec0.w < 0.0f ? 0.0f : vec0.w );
 
         return vec0;

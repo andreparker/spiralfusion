@@ -10,7 +10,7 @@
 #include "DepthBuffer32.hpp"
 #include "VertexProgram.hpp"
 #include "FragmentProgram.hpp"
-
+#include <memory>
 #include "Matrix.inl"
 
 #include "Texture.hpp"
@@ -33,6 +33,14 @@ namespace Soft3D
 		S3D_StencilBuffer8 = BIT_INT_VALUE( 4 ),
 	};
 
+    enum VertexProcessor
+    {
+        VERTEX_TRANSFORM_P,
+        VERTEX_CLIPPER_P,
+        VERTEX_RASTERIZER_P,
+        VERTEX_PROCESSOR_COUNT
+    };
+
 	// render states
 	typedef enum
 	{
@@ -54,6 +62,7 @@ namespace Soft3D
 		S3D_PT_TRIANGLE = 1,
 	}ePrimitive_t;
 
+    class IVertexProcessor;
 	class Soft3DManager
 	{
 		private:
@@ -90,7 +99,7 @@ namespace Soft3D
 			bool Init( boost::uint32_t vertexPoolSize,
 				const bufferInfo& info, const bit32& flags = _Default_Render_Flags );
 			void Shutdown();
-		
+
 			// render state operations
 			void SetRenderState( eRenderState_t renderState, boost::int32_t value );
 
@@ -138,6 +147,8 @@ namespace Soft3D
 
 			// matrices
 			mat4 m_Matrices[ maxMatrices ];
+
+			std::shared_ptr<IVertexProcessor> m_vertexProcessor[VERTEX_PROCESSOR_COUNT];
 	};
 
 	typedef SingletonHandle< Soft3DManager, Soft3DManager::singleton > Soft3DMgrHdl;
